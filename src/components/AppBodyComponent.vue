@@ -24,6 +24,7 @@
               <SeleccionarPagoComponent></SeleccionarPagoComponent>
             </v-tabs-window-item>
             <v-tabs-window-item >
+            
               <PagarComponent></PagarComponent>
             </v-tabs-window-item>
           </v-tabs-window>
@@ -96,7 +97,7 @@ const finishStep = () => {
 .stepper {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .stepper-step {
