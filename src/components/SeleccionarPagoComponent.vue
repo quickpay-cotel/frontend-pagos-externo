@@ -1,66 +1,86 @@
 <template>
-    <h6 class="text-subtitle-1">Elige las facturas o servicios que deseas pagar. Puedes revisar los detalles, como montos y fechas, antes de proceder</h6> 
-    <br>
-    <v-list>
-      <!-- Encabezado -->
-      <v-list-item v-for="item in pagos">
-        <v-row >
-          <v-col cols="4" class="font-weight-medium">Tipo de Servicio</v-col>
-          <v-col cols="4" class="font-weight-thin">{{ item.tipoServicio }}</v-col>
-        </v-row>
-        <v-row >
-          <v-col cols="4" class="font-weight-medium">Servicio</v-col>
-          <v-col cols="4" class="font-weight-thin">{{ item.servicio }}</v-col>
-        </v-row>
-        <v-row >
-          <v-col cols="4" class="font-weight-medium">Periodo</v-col>
-          <v-col cols="4" class="font-weight-thin">{{ item.periodo }}</v-col>
-        </v-row>
-        <v-row >
-          <v-col cols="4" class="font-weight-medium">Cantidad</v-col>
-          <v-col cols="4" class="font-weight-thin">{{ item.cantidad }}</v-col>
-        </v-row>
-        <v-row >
-          <v-col cols="4" class="font-weight-medium">Concepto</v-col>
-          <v-col cols="4" class="font-weight-thin">{{ item.concepto }}</v-col>
-        </v-row>
-        <v-row >
-          <v-col cols="4" class="font-weight-medium">subTotal</v-col>
-          <v-col cols="4" class="font-weight-thin">{{ item.subTotal }}</v-col>
-        </v-row>
-    
-        
-        <v-divider></v-divider>
-      </v-list-item>
-    
-    </v-list>
+<br>
+  <v-text-field v-model="search" label="Buscar" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+    single-line></v-text-field>
+  <br>
 
+
+
+  <!-- Encabezado -->
+  <v-data-table  :headers="headers" :items="deudasStore.datosDeudas" :search="search"
+    v-model:expanded="expanded" show-expand item-value="codigo_deuda">
+
+    <template v-slot:expanded-row="{ columns, item }">
+      <tr>
+        <td :colspan="columns.length">
+
+          <v-card class="ma-5">
+
+
+            <v-table density="compact">
+              <thead>
+                <tr>
+                  <th class="text-left">
+                    codigo_item
+                  </th>
+                  <th class="text-left">
+                    descripcion_item
+                  </th>
+                  <th class="text-left">
+                    cantidad
+                  </th>
+                  <th class="text-left">
+                    monto_unitario
+                  </th>
+                  <th class="text-left">
+                    genera_factura
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in item.detalle" :key="item.codigo_item">
+                  <td>{{ item.codigo_item }}</td>
+                  <td>{{ item.descripcion_item }}</td>
+                  <td>{{ item.cantidad }}</td>
+                  <td>{{ item.monto_unitario }}</td>
+                  <td>{{ item.genera_factura }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-card>
+        </td>
+      </tr>
+    </template>
+  </v-data-table>
 </template>
 <script setup>
-const pagos = [
-    {
-      tipoServicio: 'Pago de Pensione',
-      servicio: `Pago Mensualidad`,
-      periodo: 'Febrero 2024',
-      cantidad: 1,
-      concepto: 'Mensualidad Febrero',
-      subTotal: 900,
-    },
-    {
-      tipoServicio: 'Pago de Pensione',
-      servicio: `Pago Mensualidad`,
-      periodo: 'Marzo 2024',
-      cantidad: 1,
-      concepto: 'Mensualidad Febrero',
-      subTotal: 900,
-    },
-    {
-      tipoServicio: 'Pago de Pensione',
-      servicio: `Pago Mensualidad`,
-      periodo: 'Abril 2024',
-      cantidad: 1,
-      concepto: 'Mensualidad Febrero',
-      subTotal: 900,
-    },
+import { useDeudasStore } from '@/stores/useDeudasStore';
+const deudasStore = useDeudasStore();
+const search = ref('');
+const expanded = ref([]);
+
+const headers = [
+  {
+    align: 'start',
+    key: 'codigo_deuda',
+    sortable: false,
+    title: 'Código deuda',
+  },
+  { key: 'nombre_factura', title: 'Nombre Factura' },
+  { key: 'periodo', title: 'Periodo' },
+  { key: 'monto', title: 'Monto' },
+  { key: 'reconexion', title: 'Reconexión' },
+  { key: 'mensaje_deuda', title: 'Mensaje Deuda' },
+  { key: 'mensaje_contrato', title: 'Mensaje Contrato' },
+  { key: 'numero_documento', title: 'CI' },
+  { key: 'actividad', title: 'Actividad' }
+];
+const headersDetalle = [
+  { key: 'descripcion_item', value: 'Descripción' },
+  { key: 'monto_unitario', value: 'Monto Unitario' },
+  { key: 'monto_item', value: 'Monto Item' },
+  { key: 'genera_factura', value: 'Genera Factura?' }
+
 ]
+
 </script>

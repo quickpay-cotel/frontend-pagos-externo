@@ -6,8 +6,8 @@
         class="d-flex justify-center pa-0 "
       >
         <v-card
-        variant="plain"
-        width="1000"
+        width="80%"
+        border flat
         >
         <router-view />
         </v-card>
