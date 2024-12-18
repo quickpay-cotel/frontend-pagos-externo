@@ -1,16 +1,11 @@
 <template>
   <v-app>
     <AppHeaderComponent></AppHeaderComponent>
-    <v-main >
-      <v-container
-        class="d-flex justify-center pa-0 "
-      >
-        <v-card
-        width="80%"
-        border flat
-        >
-        <router-view />
-        </v-card>
+    <v-main>
+      <v-container class="d-flex justify-center pa-0 ">
+        <div width="80%">
+          <router-view />
+        </div>
       </v-container>
     </v-main>
     <AppFooterComponent />
@@ -20,6 +15,4 @@
 <script setup>
 
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

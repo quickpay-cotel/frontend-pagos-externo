@@ -1,22 +1,11 @@
 <template>
-<br>
-  <v-text-field v-model="search" label="Buscar" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
-    single-line></v-text-field>
-  <br>
-
-
-
   <!-- Encabezado -->
-  <v-data-table  :headers="headers" :items="deudasStore.datosDeudas" :search="search"
-    v-model:expanded="expanded" show-expand item-value="codigo_deuda">
-
+  <v-data-table  v-model="deudasStore.deudaSeleccionado" :headers="headers" :items="deudasStore.datosDeudas"
+    v-model:expanded="expanded" show-expand item-value="codigo_deuda"     show-select>
     <template v-slot:expanded-row="{ columns, item }">
       <tr>
         <td :colspan="columns.length">
-
           <v-card class="ma-5">
-
-
             <v-table density="compact">
               <thead>
                 <tr>
@@ -56,7 +45,6 @@
 <script setup>
 import { useDeudasStore } from '@/stores/useDeudasStore';
 const deudasStore = useDeudasStore();
-const search = ref('');
 const expanded = ref([]);
 
 const headers = [
