@@ -20,7 +20,7 @@
         </template>
         <v-card class="pa-2">
           <v-btn icon="mdi-whatsapp"  v-bind="props"></v-btn>
-          Soporte técnico para relizado el pago<br>
+          Soporte técnico para relizado el pago<br><br>
           <v-btn icon="mdi-file-pdf-box"  v-bind="props"></v-btn>
           Manual de Usuario
         </v-card>

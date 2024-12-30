@@ -21,9 +21,9 @@
                   <th class="text-left">
                     monto_unitario
                   </th>
-                  <th class="text-left">
+                  <!--<th class="text-left">
                     genera_factura
-                  </th>
+                  </th>-->
                 </tr>
               </thead>
               <tbody>
@@ -32,7 +32,7 @@
                   <td>{{ item.descripcion_item }}</td>
                   <td>{{ item.cantidad }}</td>
                   <td>{{ item.monto_unitario }}</td>
-                  <td>{{ item.genera_factura }}</td>
+                  <!--<td>{{ item.genera_factura }}</td>-->
                 </tr>
               </tbody>
             </v-table>
@@ -55,19 +55,20 @@ const headers = [
     title: 'Código deuda',
   },
   { key: 'nombre_factura', title: 'Nombre Factura' },
+  { key: 'numero_documento', title: 'CI' },
   { key: 'periodo', title: 'Periodo' },
   { key: 'monto', title: 'Monto' },
-  { key: 'reconexion', title: 'Reconexión' },
+  //{ key: 'reconexion', title: 'Reconexión' },
   { key: 'mensaje_deuda', title: 'Mensaje Deuda' },
   { key: 'mensaje_contrato', title: 'Mensaje Contrato' },
-  { key: 'numero_documento', title: 'CI' },
-  { key: 'actividad', title: 'Actividad' }
+
+  //{ key: 'actividad', title: 'Actividad' }
 ];
 const headersDetalle = [
   { key: 'descripcion_item', value: 'Descripción' },
   { key: 'monto_unitario', value: 'Monto Unitario' },
   { key: 'monto_item', value: 'Monto Item' },
-  { key: 'genera_factura', value: 'Genera Factura?' }
+  //{ key: 'genera_factura', value: 'Genera Factura?' }
 
 ]
 

@@ -14,6 +14,7 @@
     "roboto-fontface": "*",
     "sweetalert2": "^11.15.2",
     "vue": "^3.4.31",
+    "vue3-form-wizard": "^0.2.4",
     "vuetify": "^3.6.11"
   },
   "devDependencies": {

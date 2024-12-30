@@ -1,6 +1,8 @@
 <template>
   <v-app>
     <AppHeaderComponent></AppHeaderComponent>
+    <br>
+    <br>
     <v-main>
       <v-container class="d-flex justify-center pa-0 ">
         <div width="80%">

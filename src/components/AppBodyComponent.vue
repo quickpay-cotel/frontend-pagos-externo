@@ -29,10 +29,13 @@
       </v-form>
     </v-container>
   </v-card>
-  <v-chip v-if="deudasStore.datosDeudas" color="orange" class="text-white" variant="flat" @click="deudasStore.limpiarDeudas()">
+  <v-chip v-if="deudasStore.datosDeudas" color="orange" class="text-white" variant="flat"
+    @click="deudasStore.limpiarDeudas()">
     Buscar otra deuda
   </v-chip>
-  <br>
+  <br><br>
+  <h3>Datos personales</h3>
+  <hr>
   <v-row no-gutters v-if="deudasStore.datosDeudas">
     <v-col cols="12" md="4">
       <h5>Nombre</h5>
@@ -43,10 +46,10 @@
       {{ deudasStore.datosPersona.servicio }}
     </v-col>
     <v-col cols="12" md="4">
-
-
     </v-col>
-  </v-row>
+  </v-row><br>
+  <h3>Deudas</h3>
+  <hr><br>
   <v-row no-gutters v-if="deudasStore.datosDeudas">
     <v-card variant="text" color="black" border flat class="rounded-card">
       <v-card-text>
@@ -64,7 +67,7 @@ import { basicMessage } from '@/utils/swalAlert'; // Importa la función
 
 // Crear una referencia para el formulario
 const formBusquedaDeuda = ref(null);
-
+const  step= ref(1);
 const deudasStore = useDeudasStore();
 const consultaDatoPersona = ref({
   criterio: '',

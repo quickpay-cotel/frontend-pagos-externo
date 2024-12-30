@@ -1,9 +1,9 @@
 <template>
-  <AppBodyComponent />
+  <StepComponent />
 </template>
 
 <script setup>
-import AppBodyComponent from '@/components/AppBodyComponent.vue';
+import StepComponent from '@/components/StepComponent.vue';
 
   //
 </script>

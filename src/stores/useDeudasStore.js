@@ -3,9 +3,11 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import axiosInstance from "@/services/axios";
 export const useDeudasStore = defineStore("deudas", () => {
-  const datosPersona = ref(null);
-  const datosDeudas = ref(null);
-  const deudaSeleccionado = ref(null);
+  const datosConsultaPersona = ref(null);
+  const datosPersona = ref(null); // datos de la persona
+  const datosDeudas = ref(null); // deudas de la persona
+  const deudaSeleccionado = ref(null); // deudas seleccionado
+  const qrGenerado = ref(null); // qr generado
 
   const loading = ref(false);
   const error = ref(null);
@@ -29,9 +31,11 @@ export const useDeudasStore = defineStore("deudas", () => {
     error.value = null;
     datosPersona.value = null;
     try {
+      datosConsultaPersona.value = paylod;
       const response = await axiosInstance.post("/cotel/consulta-datos-cliente",
         paylod
       );
+      //console.log(response);
       datosPersona.value = response.data.result;
     } catch (err) {
       // Manejar el error
@@ -45,12 +49,12 @@ export const useDeudasStore = defineStore("deudas", () => {
       loading.value = false;
     }
   };
-  const buscarDeudas = async (pContratoId) => {
+  const buscarDeudas = async (payload) => {
     loading.value = true;
     error.value = null;
     datosDeudas.value = null;
     try {
-      const response = await axiosInstance.get(`/cotel/consulta-deuda-cliente/${pContratoId}`);
+      const response = await axiosInstance.post(`/cotel/consulta-deuda-cliente`,payload);
       datosDeudas.value = response.data.result;
     } catch (err) {
       error.value = err.message;
@@ -58,7 +62,19 @@ export const useDeudasStore = defineStore("deudas", () => {
       loading.value = false;
     }
   };
-
+  const generarQr = async (pPayload) => {
+    loading.value = true;
+    error.value = null;
+    qrGenerado.value = null;
+    try {
+      const response = await axiosInstance.post(`/cotel/generar-qr`,pPayload);
+      qrGenerado.value = response.data.result;
+    } catch (err) {
+      error.value = err.message;
+    } finally {
+      loading.value = false;
+    }
+  };
   // Devolver el estado y las acciones
   return {
     loading,
@@ -67,8 +83,11 @@ export const useDeudasStore = defineStore("deudas", () => {
     datosDeudas,
     deudaSeleccionado,
     lstCriterioConsultaDatoCliente,
+    qrGenerado,
+    datosConsultaPersona,
     limpiarDeudas,
     buscarDatosPersona,
     buscarDeudas,
+    generarQr
   };
 });
