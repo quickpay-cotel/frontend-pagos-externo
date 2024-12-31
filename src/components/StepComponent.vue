@@ -1,4 +1,5 @@
 <template>
+
   <form-wizard step-size="xs" ref="step">
     <tab-content title="Buscar Cliente">
       <v-card class="mx-auto my-8 rounded-card" width="1000px">
@@ -16,7 +17,7 @@
       </v-card>
     </tab-content>
     <tab-content title="Pagar">
-      <v-card class="mx-auto my-8 rounded-card" width="1000px" v-if="deudasStore.deudaSeleccionado">
+      <v-card class="mx-auto my-8 rounded-card" width="1000px" v-if="deudasSeleccionados.length>0">
         <v-row no-gutters>
           <v-col order="4">
             <PagosSeleccionadosComponent></PagosSeleccionadosComponent>
@@ -48,5 +49,9 @@ const step = ref(null);
 
 import { useDeudasStore } from '@/stores/useDeudasStore';
 const deudasStore = useDeudasStore();
-
+const deudasSeleccionados = computed(() => {
+  if (deudasStore.datosDeudas)
+    return deudasStore.datosDeudas.filter(deudaTodos => deudasStore.deudaSeleccionado.some(deudaSeleccionado => deudaTodos.codigo_deuda === deudaSeleccionado))
+  else return [];
+});
 </script>

@@ -27,7 +27,7 @@
       </v-row>
     </v-form>
   </v-container>
-  <v-row no-gutters v-if="deudasStore.datosDeudas" class="pl-10">
+  <v-row no-gutters v-if="deudasStore.datosPersona" class="pl-10">
     <v-col cols="12" md="3">
       <h5>Nro de Contrato</h5>
       {{ deudasStore.datosPersona.contratoId }}
@@ -60,6 +60,13 @@ const buscarDeudas = async () => {
   if (formBusquedaDeuda.value) {
     const isValid = await formBusquedaDeuda.value.validate();
     if (isValid.valid) {
+
+      // limpiando deudas y deudas seleccinados
+      deudasStore.datosDeudas = null;
+      deudasStore.deudaSeleccionado = null;
+      deudasStore.datosDeudas=null;
+      deudasStore.qrGenerado=null;
+
       await deudasStore.buscarDatosPersona(consultaDatoPersona.value);
       if (deudasStore.error) {
         basicMessage(deudasStore.error)

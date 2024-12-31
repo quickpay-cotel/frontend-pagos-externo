@@ -22,21 +22,25 @@ export const useDeudasStore = defineStore("deudas", () => {
     },
   ]);
 
-  const limpiarDeudas = () =>{
+  const limpiarDeudas = () => {
     datosPersona.value = null;
-    datosDeudas.value=null;
+    datosDeudas.value = null;
   }
   const buscarDatosPersona = async (paylod) => {
     loading.value = true;
     error.value = null;
     datosPersona.value = null;
     try {
-      datosConsultaPersona.value = paylod;
-      const response = await axiosInstance.post("/cotel/consulta-datos-cliente",
-        paylod
-      );
-      //console.log(response);
-      datosPersona.value = response.data.result;
+
+        datosConsultaPersona.value = paylod;
+        const response = await axiosInstance.post("/cotel/consulta-datos-cliente",
+          paylod
+        );
+        //console.log(response);
+        datosPersona.value = response.data.result;
+        console.log("todo ok");
+        console.log(response.data);
+
     } catch (err) {
       // Manejar el error
       if (err.response) {
@@ -45,6 +49,7 @@ export const useDeudasStore = defineStore("deudas", () => {
       } else {
         error.value = "Error de red o problema desconocido";
       }
+      loading.value = false;
     } finally {
       loading.value = false;
     }
@@ -54,7 +59,7 @@ export const useDeudasStore = defineStore("deudas", () => {
     error.value = null;
     datosDeudas.value = null;
     try {
-      const response = await axiosInstance.post(`/cotel/consulta-deuda-cliente`,payload);
+      const response = await axiosInstance.post(`/cotel/consulta-deuda-cliente`, payload);
       datosDeudas.value = response.data.result;
     } catch (err) {
       error.value = err.message;
@@ -67,7 +72,7 @@ export const useDeudasStore = defineStore("deudas", () => {
     error.value = null;
     qrGenerado.value = null;
     try {
-      const response = await axiosInstance.post(`/cotel/generar-qr`,pPayload);
+      const response = await axiosInstance.post(`/cotel/generar-qr`, pPayload);
       qrGenerado.value = response.data.result;
     } catch (err) {
       error.value = err.message;
