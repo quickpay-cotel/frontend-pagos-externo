@@ -5,17 +5,29 @@
     <br>
     <br>
     <v-main>
-      <v-container class="d-flex justify-center pa-0 ">
+      <v-container class="responsive-container">
         <div width="100%">
           <router-view />
         </div>
       </v-container>
     </v-main>
-    <AppFooterComponent />
+    <!--<AppFooterComponent />-->
   </v-app>
 </template>
 
 <script setup>
 import DialogLoadingComponent from '@/components/DialogLoadingComponent'
 </script>
-<style scoped></style>
+<style scoped>
+.responsive-container {
+  width: 80%; /* Ancho por defecto */
+  margin: 0 auto; /* Centrado */
+}
+
+@media (max-width: 600px) {
+  /* Cuando la pantalla es de tamaño móvil */
+  .responsive-container {
+    width: 100%; /* Cambia el ancho a 100% */
+  }
+}
+</style>

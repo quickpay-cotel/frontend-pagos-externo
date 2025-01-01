@@ -26,6 +26,7 @@ import { useDeudasStore } from '@/stores/useDeudasStore';
 import { ref } from 'vue';
 const deudasStore = useDeudasStore();
 const generadoQr = ref(false);
+import { basicMessage } from '@/utils/swalAlert';
 const generarQR = async () => {
   generadoQr.value = true;
   let request = {

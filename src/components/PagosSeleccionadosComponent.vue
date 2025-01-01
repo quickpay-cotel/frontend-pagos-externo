@@ -53,7 +53,8 @@ const deudasSeleccionados = computed(() => {
 const totalMontoSeleccionado = computed(() => {
   if (deudasStore.datosDeudas) {
     let lst = deudasStore.datosDeudas.filter(deudaTodos => deudasStore.deudaSeleccionado.some(deudaSeleccionado => deudaTodos.codigo_deuda === deudaSeleccionado))
-    return lst.reduce((suma, objeto) => suma + objeto.monto, 0);
+    let total =  lst.reduce((suma, objeto) => suma + objeto.monto, 0);
+    return total?parseFloat(total.toFixed(2)):0;
   }
   else return 0;
 

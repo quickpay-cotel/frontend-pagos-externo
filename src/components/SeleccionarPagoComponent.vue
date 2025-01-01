@@ -1,7 +1,15 @@
 <template>
   <!-- Encabezado -->
-  <v-data-table  v-model="deudasStore.deudaSeleccionado" :headers="headers" :items="deudasStore.datosDeudas"
-    v-model:expanded="expanded" show-expand item-value="codigo_deuda"     show-select>
+  <v-data-table
+    v-if="!isMobile"
+    v-model="deudasStore.deudaSeleccionado"
+    :headers="headers"
+    :items="deudasStore.datosDeudas"
+    v-model:expanded="expanded"
+    show-expand
+    item-value="codigo_deuda"
+    show-select
+  >
     <template v-slot:expanded-row="{ columns, item }">
       <tr>
         <td :colspan="columns.length">
@@ -9,18 +17,10 @@
             <v-table density="compact">
               <thead>
                 <tr>
-                  <th class="text-left">
-                    codigo_item
-                  </th>
-                  <th class="text-left">
-                    descripcion_item
-                  </th>
-                  <th class="text-left">
-                    cantidad
-                  </th>
-                  <th class="text-left">
-                    monto_unitario
-                  </th>
+                  <th class="text-left">codigo_item</th>
+                  <th class="text-left">descripcion_item</th>
+                  <th class="text-left">cantidad</th>
+                  <th class="text-left">monto_unitario</th>
                   <!--<th class="text-left">
                     genera_factura
                   </th>-->
@@ -41,35 +41,99 @@
       </tr>
     </template>
   </v-data-table>
+  <div v-if="isMobile">
+    <v-list>
+      <v-list-item-group>
+        <v-list-item
+          v-for="(item, index) in deudasStore.datosDeudas"
+          :key="index"
+        >
+          <v-list-item-content>
+            <!-- Campos del registro -->
+            <v-list-item-subtitle>
+              <v-card border="opacity-40 sm" class="mx-auto pa-5" max-width="360" rounded="xl" variant="text">
+              <v-col cols="1">
+                <v-checkbox
+                  v-model="deudasStore.deudaSeleccionado"
+                  :value="item.codigo_deuda"
+                  hide-details
+                ></v-checkbox>
+              </v-col>
+              <v-col cols="11">
+                <v-row align="center">
+                  <v-col cols="4" class="font-weight-bold ">Nombre</v-col>
+                  <v-col cols="8" class="font-weight-thin">{{
+                    item.nombre_factura
+                  }}</v-col>
+                </v-row>
+                <v-row align="center">
+                  <v-col cols="4" class="font-weight-bold">CI</v-col>
+                  <v-col cols="8" class="font-weight-thin">{{
+                    item.numero_documento
+                  }}</v-col>
+                </v-row>
+                <v-row align="center">
+                  <v-col cols="4" class="font-weight-bold">Periodo</v-col>
+                  <v-col cols="8" class="font-weight-thin">{{ item.periodo }}</v-col>
+                </v-row>
+                <v-row align="center">
+                  <v-col cols="4" class="font-weight-bold">Monto</v-col>
+                  <v-col cols="8" class="font-weight-thin">{{ item.monto }}</v-col>
+                </v-row>
+                <v-row align="center">
+                  <v-col cols="4" class="font-weight-bold">Mensaje Deuda</v-col>
+                  <v-col cols="8" class="font-weight-thin">{{ item.mensaje_deuda }}</v-col>
+                </v-row>
+              </v-col>
+              </v-card>
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+  </div>
+  <!-- Lista para pantallas móviles -->
 </template>
 <script setup>
-import { useDeudasStore } from '@/stores/useDeudasStore';
+import { ref, onMounted, onUnmounted } from "vue";
+import { useDeudasStore } from "@/stores/useDeudasStore";
 const deudasStore = useDeudasStore();
 const expanded = ref([]);
+// Detectar si es móvil
+const isMobile = ref(window.innerWidth <= 768);
+const updateScreenSize = () => {
+  isMobile.value = window.innerWidth <= 768;
+};
+onMounted(() => {
+  window.addEventListener("resize", updateScreenSize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateScreenSize);
+});
+// =============
 
 const headers = [
   {
-    align: 'start',
-    key: 'codigo_deuda',
+    align: "start",
+    key: "codigo_deuda",
     sortable: false,
-    title: 'Código deuda',
+    title: "Código deuda",
   },
-  { key: 'nombre_factura', title: 'Nombre Factura' },
-  { key: 'numero_documento', title: 'CI' },
-  { key: 'periodo', title: 'Periodo' },
-  { key: 'monto', title: 'Monto' },
+  { key: "nombre_factura", title: "Nombre Factura" },
+  { key: "numero_documento", title: "CI" },
+  { key: "periodo", title: "Periodo" },
+  { key: "monto", title: "Monto" },
   //{ key: 'reconexion', title: 'Reconexión' },
-  { key: 'mensaje_deuda', title: 'Mensaje Deuda' },
-  { key: 'mensaje_contrato', title: 'Mensaje Contrato' },
+  { key: "mensaje_deuda", title: "Mensaje Deuda" },
+  { key: "mensaje_contrato", title: "Mensaje Contrato" },
 
   //{ key: 'actividad', title: 'Actividad' }
 ];
 const headersDetalle = [
-  { key: 'descripcion_item', value: 'Descripción' },
-  { key: 'monto_unitario', value: 'Monto Unitario' },
-  { key: 'monto_item', value: 'Monto Item' },
+  { key: "descripcion_item", value: "Descripción" },
+  { key: "monto_unitario", value: "Monto Unitario" },
+  { key: "monto_item", value: "Monto Item" },
   //{ key: 'genera_factura', value: 'Genera Factura?' }
-
-]
-
+];
 </script>

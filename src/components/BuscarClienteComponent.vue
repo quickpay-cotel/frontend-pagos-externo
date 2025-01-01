@@ -1,25 +1,25 @@
 <template>
   <v-container>
     <v-form ref="formBusquedaDeuda">
-      <v-row no-gutters>
-        <v-col order="4">
+      <v-row >
+        <v-col cols="12" md="3">
           <v-sheet class="pa-2 ma-2">
             <v-select variant="outlined" v-model="consultaDatoPersona.criterio" item-title="text" item-value="id"
               :items="deudasStore.lstCriterioConsultaDatoCliente" label="Seleccione Tipo de Busqueda"
-              :rules="[v => !!v || 'Valor requerido']">
+              :rules="[v => !!v || 'Valor requerido']" hidden>
             </v-select>
           </v-sheet>
         </v-col>
-        <v-col order="4">
+        <v-col cols="12" md="5">
           <v-sheet class="pa-2 ma-2">
             <v-text-field variant="outlined" v-model="consultaDatoPersona.instancia"
               :label="!consultaDatoPersona.criterio ? '' : (consultaDatoPersona.criterio == 'C' ? 'Ingrese Numero de Contrato' : 'Ingrese Numero de Teléfono')"
-              :rules="[v => !!v || 'Valor requerido']"></v-text-field>
+              :rules="[v => !!v || 'Valor requerido']" hidden></v-text-field>
           </v-sheet>
         </v-col>
-        <v-col order="4">
+        <v-col cols="12" md="4">
           <v-sheet class="pa-2 ma-2">
-            <v-btn class="text-none mb-4 text-white" color="orange" size="x-large" variant="flat"
+            <v-btn class="text-none mb-4 text-white" color="orange" size="x-large" variant="flat" hidden
               @click="buscarDeudas()">Buscar
             </v-btn>
           </v-sheet>
@@ -27,7 +27,7 @@
       </v-row>
     </v-form>
   </v-container>
-  <v-row no-gutters v-if="deudasStore.datosPersona" class="pl-10">
+  <v-row v-if="deudasStore.datosPersona" class="pl-10">
     <v-col cols="12" md="3">
       <h5>Nro de Contrato</h5>
       {{ deudasStore.datosPersona.contratoId }}
@@ -39,8 +39,6 @@
     <v-col cols="12" md="4">
       <h5>Servicio</h5>
       {{ deudasStore.datosPersona.servicio }}
-    </v-col>
-    <v-col cols="12" md="4">
     </v-col>
   </v-row>
 
