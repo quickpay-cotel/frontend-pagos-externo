@@ -5,7 +5,7 @@
     <br>
     <br>
     <v-main>
-      <v-container class="responsive-container">
+      <v-container :class="['custom-container']" >
         <div width="100%">
           <router-view />
         </div>
@@ -19,15 +19,17 @@
 import DialogLoadingComponent from '@/components/DialogLoadingComponent'
 </script>
 <style scoped>
-.responsive-container {
-  width: 80%; /* Ancho por defecto */
-  margin: 0 auto; /* Centrado */
+
+.custom-container {
+  max-width: 80%; /* Ancho por defecto para pantallas grandes */
+  margin: 0 auto;
 }
 
 @media (max-width: 600px) {
-  /* Cuando la pantalla es de tamaño móvil */
-  .responsive-container {
-    width: 100%; /* Cambia el ancho a 100% */
+  /* Cuando es móvil */
+  .custom-container {
+    max-width: 100%; /* Cambia el ancho al 100% */
   }
 }
+
 </style>

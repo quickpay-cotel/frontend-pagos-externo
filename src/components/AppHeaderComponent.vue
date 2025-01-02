@@ -5,7 +5,7 @@
      <img src="https://www.cotel.bo/wp-content/uploads/2021/11/login-2.png" alt="" width="100px">
     </v-container>
     <template v-slot:append>
-      <v-menu transition="slide-x-transition" open-on-hover elevation="0">
+      <v-menu transition="slide-x-transition" open-on-click elevation="0">
         <template v-slot:activator="{ props }">
           <v-btn icon="mdi-help" color="orange" v-bind="props"></v-btn>
         </template>

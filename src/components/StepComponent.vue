@@ -9,7 +9,7 @@
       <v-card
         v-if="deudasStore.datosDeudas"
         class="mx-auto my-8 rounded-card pa-4"
-        max-width="1000px"
+        max-width="100%"
       >
         <SeleccionarPagoComponent></SeleccionarPagoComponent>
       </v-card>

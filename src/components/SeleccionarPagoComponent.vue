@@ -51,8 +51,8 @@
           <v-list-item-content>
             <!-- Campos del registro -->
             <v-list-item-subtitle>
-              <v-card border="opacity-40 sm" class="mx-auto pa-5" max-width="360" rounded="xl" variant="text">
-              <v-col cols="1">
+              <v-card border="opacity-40 sm" class="mx-auto pa-2" max-width="100%" rounded="xl" variant="text">
+              <v-col cols="1" class="pa-0">
                 <v-checkbox
                   v-model="deudasStore.deudaSeleccionado"
                   :value="item.codigo_deuda"
@@ -60,29 +60,25 @@
                 ></v-checkbox>
               </v-col>
               <v-col cols="11">
-                <v-row align="center">
-                  <v-col cols="4" class="font-weight-bold ">Nombre</v-col>
-                  <v-col cols="8" class="font-weight-thin">{{
-                    item.nombre_factura
-                  }}</v-col>
+                <v-row align="center" class="pa-1">
+                  <span class="font-weight-bold ">Nombre</span><br>
+                  <span class="font-weight-thin ">{{ item.nombre_factura }}</span>
                 </v-row>
-                <v-row align="center">
-                  <v-col cols="4" class="font-weight-bold">CI</v-col>
-                  <v-col cols="8" class="font-weight-thin">{{
-                    item.numero_documento
-                  }}</v-col>
+                <v-row align="center" class="pa-1">
+                  <span class="font-weight-bold ">CI&nbsp;</span>
+                  <span class="font-weight-thin ">{{ item.numero_documento }}</span>
                 </v-row>
-                <v-row align="center">
-                  <v-col cols="4" class="font-weight-bold">Periodo</v-col>
-                  <v-col cols="8" class="font-weight-thin">{{ item.periodo }}</v-col>
+                <v-row align="center" class="pa-1">
+                  <span class="font-weight-bold ">Periodo&nbsp;</span>
+                  <span class="font-weight-thin ">{{ item.periodo }}</span>
                 </v-row>
-                <v-row align="center">
-                  <v-col cols="4" class="font-weight-bold">Monto</v-col>
-                  <v-col cols="8" class="font-weight-thin">{{ item.monto }}</v-col>
+                <v-row align="center" class="pa-1">
+                  <span class="font-weight-bold ">Monto&nbsp;</span>
+                  <span class="font-weight-thin ">{{ item.monto }}</span>
                 </v-row>
-                <v-row align="center">
-                  <v-col cols="4" class="font-weight-bold">Mensaje Deuda</v-col>
-                  <v-col cols="8" class="font-weight-thin">{{ item.mensaje_deuda }}</v-col>
+                <v-row align="center" class="pa-1">
+                  <span class="font-weight-bold ">Mensaje Deuda</span><br>
+                  <span class="font-weight-thin ">{{ item.mensaje_deuda }}</span>
                 </v-row>
               </v-col>
               </v-card>
