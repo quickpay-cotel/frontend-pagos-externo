@@ -19,7 +19,7 @@
         </v-alert>
       </v-card>
     </tab-content>
-    <tab-content title="Last step">
+    <tab-content title="Pagar">
       <v-row align="center">
         <v-col cols="12" md="6"><PagosSeleccionadosComponent></PagosSeleccionadosComponent></v-col>
         <v-col cols="12" md="6"> <PagarComponent></PagarComponent></v-col>
