@@ -60,10 +60,11 @@ const buscarDeudas = async () => {
     if (isValid.valid) {
 
       // limpiando deudas y deudas seleccinados
-      deudasStore.datosDeudas = null;
-      deudasStore.deudaSeleccionado = null;
-      deudasStore.datosDeudas=null;
+      deudasStore.datosDeudas = [];
+      deudasStore.deudaSeleccionado = [];
       deudasStore.qrGenerado=null;
+
+
 
       await deudasStore.buscarDatosPersona(consultaDatoPersona.value);
       if (deudasStore.error) {

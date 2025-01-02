@@ -1,15 +1,7 @@
 <template>
   <!-- Encabezado -->
-  <v-data-table
-    v-if="!isMobile"
-    v-model="deudasStore.deudaSeleccionado"
-    :headers="headers"
-    :items="deudasStore.datosDeudas"
-    v-model:expanded="expanded"
-    show-expand
-    item-value="codigo_deuda"
-    show-select
-  >
+  <v-data-table v-if="!isMobile" v-model="deudasStore.deudaSeleccionado" :headers="headers"
+    :items="deudasStore.datosDeudas" v-model:expanded="expanded" show-expand item-value="codigo_deuda" show-select>
     <template v-slot:expanded-row="{ columns, item }">
       <tr>
         <td :colspan="columns.length">
@@ -44,42 +36,35 @@
   <div v-if="isMobile">
     <v-list>
       <v-list-item-group>
-        <v-list-item
-          v-for="(item, index) in deudasStore.datosDeudas"
-          :key="index"
-        >
+        <v-list-item v-for="(item, index) in deudasStore.datosDeudas" :key="index">
           <v-list-item-content>
             <!-- Campos del registro -->
             <v-list-item-subtitle>
               <v-card border="opacity-40 sm" class="mx-auto pa-2" max-width="100%" rounded="xl" variant="text">
-              <v-col cols="1" class="pa-0">
-                <v-checkbox
-                  v-model="deudasStore.deudaSeleccionado"
-                  :value="item.codigo_deuda"
-                ></v-checkbox>
-              </v-col>
-              <v-col cols="11">
-                <v-row align="center" class="pa-1">
-                  <span class="font-weight-bold ">Nombre</span><br>
-                  <span class="font-weight-thin ">{{ item.nombre_factura }}</span>
-                </v-row>
-                <v-row align="center" class="pa-1">
-                  <span class="font-weight-bold ">CI&nbsp;</span>
-                  <span class="font-weight-thin ">{{ item.numero_documento }}</span>
-                </v-row>
-                <v-row align="center" class="pa-1">
-                  <span class="font-weight-bold ">Periodo&nbsp;</span>
-                  <span class="font-weight-thin ">{{ item.periodo }}</span>
-                </v-row>
-                <v-row align="center" class="pa-1">
-                  <span class="font-weight-bold ">Monto&nbsp;</span>
-                  <span class="font-weight-thin ">{{ item.monto }}</span>
-                </v-row>
-                <v-row align="center" class="pa-1">
-                  <span class="font-weight-bold ">Mensaje Deuda</span><br>
-                  <span class="font-weight-thin ">{{ item.mensaje_deuda }}</span>
-                </v-row>
-              </v-col>
+                <v-col cols="12">
+                  <v-switch color="primary" v-model="deudasStore.deudaSeleccionado" :value="item.codigo_deuda"
+                    label="Seleccionar"></v-switch>
+                  <v-row align="center" class="pa-1">
+                    <span class="font-weight-bold ">Nombre</span><br>
+                    <span class="font-weight-thin ">{{ item.nombre_factura }}</span>
+                  </v-row>
+                  <v-row align="center" class="pa-1">
+                    <span class="font-weight-bold ">CI&nbsp;</span>
+                    <span class="font-weight-thin ">{{ item.numero_documento }}</span>
+                  </v-row>
+                  <v-row align="center" class="pa-1">
+                    <span class="font-weight-bold ">Periodo&nbsp;</span>
+                    <span class="font-weight-thin ">{{ item.periodo }}</span>
+                  </v-row>
+                  <v-row align="center" class="pa-1">
+                    <span class="font-weight-bold ">Monto&nbsp;</span>
+                    <span class="font-weight-thin ">{{ item.monto }}</span>
+                  </v-row>
+                  <v-row align="center" class="pa-1">
+                    <span class="font-weight-bold ">Mensaje Deuda</span><br>
+                    <span class="font-weight-thin ">{{ item.mensaje_deuda }}</span>
+                  </v-row>
+                </v-col>
               </v-card>
             </v-list-item-subtitle>
           </v-list-item-content>

@@ -5,8 +5,8 @@ import axiosInstance from "@/services/axios";
 export const useDeudasStore = defineStore("deudas", () => {
   const datosConsultaPersona = ref(null);
   const datosPersona = ref(null); // datos de la persona
-  const datosDeudas = ref(null); // deudas de la persona
-  const deudaSeleccionado = ref(null); // deudas seleccionado
+  const datosDeudas = ref([]); // deudas de la persona
+  const deudaSeleccionado = ref([]); // deudas seleccionado
   const qrGenerado = ref(null); // qr generado
 
   const loading = ref(false);

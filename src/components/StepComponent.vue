@@ -7,7 +7,7 @@
     </tab-content>
     <tab-content title="Seleccionar Deudas">
       <v-card
-        v-if="deudasStore.datosDeudas"
+        v-if="deudasStore.datosDeudas.length>0"
         class="mx-auto my-8 rounded-card pa-4"
         max-width="100%"
       >
@@ -20,10 +20,13 @@
       </v-card>
     </tab-content>
     <tab-content title="Pagar">
-      <v-row align="center">
+      <v-row align="center"  v-if="deudasStore.deudaSeleccionado.length>0">
         <v-col cols="12" md="6"><PagosSeleccionadosComponent></PagosSeleccionadosComponent></v-col>
         <v-col cols="12" md="6"> <PagarComponent></PagarComponent></v-col>
       </v-row>
+      <v-alert v-else border="top" type="warning" variant="outlined" prominent>
+          No existe Deudas Seleccionados
+        </v-alert>
     </tab-content>
   </form-wizard>
 </template>
