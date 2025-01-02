@@ -56,7 +56,6 @@
                 <v-checkbox
                   v-model="deudasStore.deudaSeleccionado"
                   :value="item.codigo_deuda"
-                  hide-details
                 ></v-checkbox>
               </v-col>
               <v-col cols="11">
