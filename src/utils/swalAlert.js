@@ -21,11 +21,33 @@ export const showAlert = () => {
 };
 
 // Función con configuración personalizada (puedes agregar más si es necesario)
-export const showCustomAlert = (title, text, icon = 'info') => {
-  Swal.fire({
+export const showCustomAlert = async (title, text, icon = 'warning') => {
+  return Swal.fire({
     title: title,
     text: text,
     icon: icon,
-    confirmButtonText: 'OK',
+    confirmButtonColor: "orange",
+    cancelButtonColor: "#9b9b9b",
+    showCancelButton: true,
+    confirmButtonText: 'Aceptar',
   });
 };
+
+
+ /*Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!"
+}).then((result) => {
+  if (result.isConfirmed) {
+    Swal.fire({
+      title: "Deleted!",
+      text: "Your file has been deleted.",
+      icon: "success"
+    });
+  }
+});*/

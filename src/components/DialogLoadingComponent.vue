@@ -12,7 +12,7 @@
       >
         <v-list-item
           prepend-icon="$vuetify-outline"
-          title="Procesando...."
+          :title="deudasStore.smsLoading?deudasStore.smsLoading: 'Procesando....'"
         >
           <template v-slot:prepend>
             <div class="pe-4">

@@ -12,6 +12,7 @@
     "axios": "^1.7.7",
     "core-js": "^3.37.1",
     "roboto-fontface": "*",
+    "socket.io-client": "^4.8.1",
     "sweetalert2": "^11.15.2",
     "vue": "^3.4.31",
     "vue3-form-wizard": "^0.2.4",

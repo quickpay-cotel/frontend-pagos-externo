@@ -10,6 +10,7 @@ export const useDeudasStore = defineStore("deudas", () => {
   const qrGenerado = ref(null); // qr generado
 
   const loading = ref(false);
+  const smsLoading = ref(null);
   const error = ref(null);
   const lstCriterioConsultaDatoCliente = ref([
     {
@@ -68,14 +69,22 @@ export const useDeudasStore = defineStore("deudas", () => {
     }
   };
   const generarQr = async (pPayload) => {
+    console.log("generando QR");
     loading.value = true;
     error.value = null;
-    qrGenerado.value = null;
+    //qrGenerado.value = null;
     try {
       const response = await axiosInstance.post(`/cotel/generar-qr`, pPayload);
       qrGenerado.value = response.data.result;
     } catch (err) {
-      error.value = err.message;
+      // Manejar el error
+      if (err.response) {
+        // Acceder al mensaje del backend
+        error.value = err.response.data.message || "Error desconocido del servidor";
+      } else {
+        error.value = "Error de red o problema desconocido";
+      }
+      loading.value = false;
     } finally {
       loading.value = false;
     }
@@ -83,6 +92,7 @@ export const useDeudasStore = defineStore("deudas", () => {
   // Devolver el estado y las acciones
   return {
     loading,
+    smsLoading,
     error,
     datosPersona,
     datosDeudas,

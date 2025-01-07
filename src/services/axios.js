@@ -1,9 +1,8 @@
 import axios from 'axios';
-
+const url_api = import.meta.env.VITE_API_URL;
 // Crear una instancia de Axios con la URL base
 const axiosInstance = axios.create({
-  //baseURL: 'http://localhost:7501',  // URL base definida en la variable de entorno
-  baseURL: 'https://quickpay.com.bo:7501',  // URL base definida en la variable de entorno
+  baseURL: url_api,  // URL base definida en la variable de entorno
   timeout: 30000,  // Tiempo de espera para la solicitud
 });
 

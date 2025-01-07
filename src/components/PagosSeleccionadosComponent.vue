@@ -34,7 +34,7 @@
           Total:
         </p>
         <p class="font-weight-bold">
-          ${{ totalMontoSeleccionado }}
+          Bs {{ totalMontoSeleccionado }}
         </p>
       </div>
     </v-card>

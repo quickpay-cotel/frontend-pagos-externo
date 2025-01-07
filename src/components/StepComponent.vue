@@ -1,5 +1,5 @@
 <template>
-  <form-wizard shape="square" nextButtonText="Siguiente" backButtonText="Atras">
+  <form-wizard shape="square" nextButtonText="Siguiente" backButtonText="Atras" color="#ff8a24" finishButtonText="Finalizar">
     <tab-content title="Buscar Cliente">
       <v-card class="mx-auto my-8 rounded-card">
         <BuscarClienteComponent></BuscarClienteComponent>
