@@ -78,12 +78,15 @@ import { io } from "socket.io-client";
 onMounted(() => {
   const socket = io(url_sockete);
   socket.on("connect", () => {
-    //console.log("sokete conectado");
+    console.log("sokete conectado");
+    console.log(url_sockete);
   });
   socket.on("notification", (event) => {
     respSocket.value = null;
     if (event) {
       setTimeout(() => {
+        console.log("evento socket");
+        console.log(event);
         if (deudasStore.qrGenerado.alias == event.alias) {
           if (event.mensaje == 'PROCESANDO PAGO') {
             deudasStore.loading = true;
