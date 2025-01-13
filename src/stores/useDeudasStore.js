@@ -89,6 +89,27 @@ export const useDeudasStore = defineStore("deudas", () => {
       loading.value = false;
     }
   };
+
+  const verificarEstadoQR = async (pPayload) =>{
+    loading.value = true;
+    error.value = null;
+
+    try {
+      await axiosInstance.post(`/pagos/estado-pago-qr`, pPayload);
+    } catch (err) {
+      // Manejar el error
+      if (err.response) {
+        // Acceder al mensaje del backend
+        error.value = err.response.data.message || "Error desconocido del servidor";
+      } else {
+        error.value = "Error de red o problema desconocido";
+      }
+      loading.value = false;
+    } finally {
+      loading.value = false;
+    }
+
+  }
   // Devolver el estado y las acciones
   return {
     loading,
@@ -103,6 +124,7 @@ export const useDeudasStore = defineStore("deudas", () => {
     limpiarDeudas,
     buscarDatosPersona,
     buscarDeudas,
-    generarQr
+    generarQr,
+    verificarEstadoQR
   };
 });

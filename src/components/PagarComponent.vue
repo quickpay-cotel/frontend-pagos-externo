@@ -2,9 +2,21 @@
   <v-container>
     <v-card border="opacity-40 sm" class="mx-auto pa-5" max-width="360" rounded="xl" variant="text">
       <h2 v-if="!generandoQr && !datosPago">Métodos de Pago</h2>
-      <a v-if="!generandoQr && !datosPago" @click="clickGenerarQr()">
-        <img src="../assets/pago/pago_qr.png" width="120px">
-      </a>
+      <v-row>
+        <v-col>
+          <a v-if="!generandoQr && !datosPago" @click="clickGenerarQr()">
+            <img src="../assets/pago/pago_qr.png" width="120px">
+          </a>
+        </v-col>
+        <v-col class="mt-4">
+          <div v-if="!generandoQr && deudasStore.qrGenerado">
+            <v-chip color="#ff8a24" variant="flat" @click="verificarEstadoPagoQr()" >Ya realice el PAGO</v-chip>
+          </div>
+        </v-col>
+      </v-row>
+
+
+
       <!-- cuando esta generando QR -->
       <img width="200px" v-if="generandoQr" src="../assets/pago/generando_qr.gif" alt="genera qr" />
 
@@ -85,8 +97,6 @@ onMounted(() => {
     respSocket.value = null;
     if (event) {
       setTimeout(() => {
-        console.log("evento socket");
-        console.log(event);
         if (deudasStore.qrGenerado.alias == event.alias) {
           if (event.mensaje == 'PROCESANDO PAGO') {
             deudasStore.loading = true;
@@ -144,4 +154,17 @@ const descargaQr = (linkSource) => {
   downloadLink.download = "qr.jpg";
   downloadLink.click();
 };
+const verificarEstadoPagoQr = async () =>{
+  if(!deudasStore.qrGenerado.alias){
+    basicMessage("QR no esta generado");
+    return ;
+  }
+  await deudasStore.verificarEstadoQR({
+    alias:deudasStore.qrGenerado.alias
+  });
+  if (deudasStore.error) {
+    basicMessage(deudasStore.error)
+    return;
+  }
+}
 </script>
