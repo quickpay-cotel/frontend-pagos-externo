@@ -1,7 +1,8 @@
 <template>
   <!-- Encabezado -->
   <v-data-table v-if="!isMobile" v-model="deudasStore.deudaSeleccionado" :headers="headers"
-    :items="deudasStore.datosDeudas" v-model:expanded="expanded" show-expand item-value="codigo_deuda" show-select>
+    :items="deudasStore.datosDeudas" v-model:expanded="expanded" show-expand item-value="codigo_deuda" show-select   >
+
     <template v-slot:expanded-row="{ columns, item }">
       <tr>
         <td :colspan="columns.length">
@@ -9,10 +10,11 @@
             <v-table density="compact">
               <thead>
                 <tr>
-                  <th class="text-left">codigo_item</th>
-                  <th class="text-left">descripcion_item</th>
-                  <th class="text-left">cantidad</th>
-                  <th class="text-left">monto_unitario</th>
+                  <!--<th class="text-left">codigo_item</th>-->
+                  <th class="text-left">DETALLE</th>
+                  <th class="text-end">CANTIDAD</th>
+                  <th class="text-end" >MONTO UNITARIO</th>
+                  <th class="text-end" >MONTO TOTAL</th>
                   <!--<th class="text-left">
                     genera_factura
                   </th>-->
@@ -20,10 +22,11 @@
               </thead>
               <tbody>
                 <tr v-for="item in item.detalle" :key="item.codigo_item">
-                  <td>{{ item.codigo_item }}</td>
+                  <!--<td>{{ item.codigo_item }}</td>-->
                   <td>{{ item.descripcion_item }}</td>
-                  <td>{{ item.cantidad }}</td>
-                  <td>{{ item.monto_unitario }}</td>
+                  <td class="text-end">{{ item.cantidad }}</td>
+                  <td class="text-end">{{ item.monto_unitario }}</td>
+                  <td class="text-end">{{ item.monto_item }}</td>
                   <!--<td>{{ item.genera_factura }}</td>-->
                 </tr>
               </tbody>
@@ -45,23 +48,23 @@
                   <v-switch color="primary" v-model="deudasStore.deudaSeleccionado" :value="item.codigo_deuda"
                     label="Seleccionar"></v-switch>
                   <v-row align="center" class="pa-1">
-                    <span class="font-weight-bold ">Nombre</span><br>
+                    <span class="font-weight-bold ">NOMBRE FACTURA</span><br>
                     <span class="font-weight-thin ">{{ item.nombre_factura }}</span>
                   </v-row>
                   <v-row align="center" class="pa-1">
-                    <span class="font-weight-bold ">CI&nbsp;</span>
+                    <span class="font-weight-bold ">CI/NIT&nbsp;</span>
                     <span class="font-weight-thin ">{{ item.numero_documento }}</span>
                   </v-row>
                   <v-row align="center" class="pa-1">
-                    <span class="font-weight-bold ">Periodo&nbsp;</span>
+                    <span class="font-weight-bold ">PERIODO&nbsp;</span>
                     <span class="font-weight-thin ">{{ item.periodo }}</span>
                   </v-row>
                   <v-row align="center" class="pa-1">
-                    <span class="font-weight-bold ">Monto&nbsp;</span>
+                    <span class="font-weight-bold ">MONTO&nbsp;</span>
                     <span class="font-weight-thin ">{{ item.monto }}</span>
                   </v-row>
                   <v-row align="center" class="pa-1">
-                    <span class="font-weight-bold ">Mensaje Deuda</span><br>
+                    <span class="font-weight-bold ">SERVICIO</span><br>
                     <span class="font-weight-thin ">{{ item.mensaje_deuda }}</span>
                   </v-row>
                 </v-col>
@@ -94,26 +97,20 @@ onUnmounted(() => {
 // =============
 
 const headers = [
-  {
+  /*{
     align: "start",
     key: "codigo_deuda",
     sortable: false,
     title: "Código deuda",
-  },
-  { key: "nombre_factura", title: "Nombre Factura" },
-  { key: "numero_documento", title: "CI" },
-  { key: "periodo", title: "Periodo" },
-  { key: "monto", title: "Monto" },
+  },*/
+  { key: "nombre_factura", title: "NOMBRE FACTURA" , align: "start",},
+  { key: "numero_documento", title: "CI/NIT", align: "start", },
+  { key: "periodo", title: "PERIODO",  align: "start", },
+  { key: "monto", title: "MONTO" , align: "end",},
   //{ key: 'reconexion', title: 'Reconexión' },
-  { key: "mensaje_deuda", title: "Mensaje Deuda" },
-  { key: "mensaje_contrato", title: "Mensaje Contrato" },
+  { key: "mensaje_deuda", title: "SERVICIO" , align: "start",},
+  //{ key: "mensaje_contrato", title: "Mensaje Contrato" },
 
   //{ key: 'actividad', title: 'Actividad' }
-];
-const headersDetalle = [
-  { key: "descripcion_item", value: "Descripción" },
-  { key: "monto_unitario", value: "Monto Unitario" },
-  { key: "monto_item", value: "Monto Item" },
-  //{ key: 'genera_factura', value: 'Genera Factura?' }
 ];
 </script>

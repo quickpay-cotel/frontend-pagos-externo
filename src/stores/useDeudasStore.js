@@ -8,7 +8,8 @@ export const useDeudasStore = defineStore("deudas", () => {
   const datosDeudas = ref([]); // deudas de la persona
   const deudaSeleccionado = ref([]); // deudas seleccionado
   const qrGenerado = ref(null); // qr generado
-
+  const lstComprobantes = ref([]);
+  const vEmailComprobante = ref(null);
   const loading = ref(false);
   const smsLoading = ref(null);
   const error = ref(null);
@@ -33,14 +34,14 @@ export const useDeudasStore = defineStore("deudas", () => {
     datosPersona.value = null;
     try {
 
-        datosConsultaPersona.value = paylod;
-        const response = await axiosInstance.post("/cotel/consulta-datos-cliente",
-          paylod
-        );
-        //console.log(response);
-        datosPersona.value = response.data.result;
-        console.log("todo ok");
-        console.log(response.data);
+      datosConsultaPersona.value = paylod;
+      const response = await axiosInstance.post("/cotel/consulta-datos-cliente",
+        paylod
+      );
+      //console.log(response);
+      datosPersona.value = response.data.result;
+      console.log("todo ok");
+      console.log(response.data);
 
     } catch (err) {
       // Manejar el error
@@ -90,7 +91,7 @@ export const useDeudasStore = defineStore("deudas", () => {
     }
   };
 
-  const verificarEstadoQR = async (pPayload) =>{
+  const verificarEstadoQR = async (pPayload) => {
     loading.value = true;
     error.value = null;
 
@@ -110,6 +111,30 @@ export const useDeudasStore = defineStore("deudas", () => {
     }
 
   }
+  const obtenerComprobantes = async (pAlias) => {
+    loading.value = true;
+    error.value = null;
+    lstComprobantes.value = [];
+
+    try {
+      const response = await axiosInstance.get(`/pagos/obtener-comprobantes/${pAlias}`);
+      lstComprobantes.value = response.data.result;
+
+    } catch (err) {
+      // Manejar el error
+      if (err.response) {
+        // Acceder al mensaje del backend
+        error.value = err.response.data.message || "Error desconocido del servidor";
+      } else {
+        error.value = "Error de red o problema desconocido";
+      }
+      loading.value = false;
+    } finally {
+      loading.value = false;
+    }
+
+  }
+
   // Devolver el estado y las acciones
   return {
     loading,
@@ -118,13 +143,16 @@ export const useDeudasStore = defineStore("deudas", () => {
     datosPersona,
     datosDeudas,
     deudaSeleccionado,
+    lstComprobantes,
     lstCriterioConsultaDatoCliente,
     qrGenerado,
+    vEmailComprobante,
     datosConsultaPersona,
     limpiarDeudas,
     buscarDatosPersona,
     buscarDeudas,
     generarQr,
-    verificarEstadoQR
+    verificarEstadoQR,
+    obtenerComprobantes
   };
 });

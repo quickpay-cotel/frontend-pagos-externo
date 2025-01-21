@@ -63,10 +63,12 @@ const buscarDeudas = async () => {
       deudasStore.datosDeudas = [];
       deudasStore.deudaSeleccionado = [];
       deudasStore.qrGenerado=null;
-
-
-
-      await deudasStore.buscarDatosPersona(consultaDatoPersona.value);
+      let request =
+      {
+        criterio : consultaDatoPersona.value.criterio,
+        instancia : consultaDatoPersona.value.instancia.trim()
+      }
+      await deudasStore.buscarDatosPersona(request);
       if (deudasStore.error) {
         basicMessage(deudasStore.error)
         return;

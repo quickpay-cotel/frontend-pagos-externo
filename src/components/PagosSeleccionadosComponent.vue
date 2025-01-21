@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-card border="opacity-40 sm" class="mx-auto pa-5" max-width="360" rounded="xl" variant="text">
-      <h2>Detalle de Pago</h2><br>
+    <v-card border="opacity-40 sm" class="pa-5" rounded="xl" variant="text">
+      <h2 style="text-align: center;">Detalle de Pago</h2><br>
       <div class="receipt-details" v-for="deuda in deudasSeleccionados" :key="deuda">
         <div class="detail-item">
           <p class="font-weight-bold">

@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-card border="opacity-40 sm" class="mx-auto pa-5" max-width="360" rounded="xl" variant="text">
-      <h2 v-if="!generandoQr && !datosPago">Métodos de Pago</h2>
+    <v-card border="opacity-40 sm" class="pa-5 text-center"  rounded="xl" variant="text">
+      <h2 style="text-align: center;" v-if="!generandoQr && !datosPago">Métodos de Pago</h2>
       <v-row>
         <v-col>
           <a v-if="!generandoQr && !datosPago" @click="clickGenerarQr()">
@@ -9,43 +9,31 @@
           </a>
         </v-col>
         <v-col class="mt-4">
-          <div v-if="!generandoQr && deudasStore.qrGenerado">
-            <v-chip color="#ff8a24" variant="flat" @click="verificarEstadoPagoQr()" >Ya realice el PAGO</v-chip>
+          <div v-if="!generandoQr && deudasStore.qrGenerado && !datosPago">
+            <v-chip color="#ff8a24" variant="flat" @click="verificarEstadoPagoQr()">Ya realice el PAGO</v-chip>
           </div>
         </v-col>
       </v-row>
 
-
-
       <!-- cuando esta generando QR -->
       <img width="200px" v-if="generandoQr" src="../assets/pago/generando_qr.gif" alt="genera qr" />
 
-
-
       <!-- cuando ya se ha relizado el pago -->
 
+      <!--<div v-if="!generandoQr && datosPago">-->
       <div v-if="!generandoQr && datosPago">
-
         <v-sheet class="pa-4 text-center mx-auto" elevation="" max-width="600" rounded="lg" width="100%">
           <v-icon class="mb-5" color="success" icon="mdi-check-circle" size="112"></v-icon>
           <h2 class="text-h5 mb-6">La transacción se ha realizado con exito</h2>
-          <table>
-            <tr style="font-size: 10px;">
-
-              <th>Monto</th>
-              <th>Fecha Procesado</th>
-
-            </tr>
-            <tr style="font-size: 10px;">
-
-              <td>{{ datosPago.monto + ' ' + datosPago.moneda }}</td>
-              <td>{{ datosPago.fechaproceso }}</td>
-
-            </tr>
-          </table>
+          <div>
+            <b>Monto</b> : {{ datosPago.monto + ' ' + datosPago.moneda }}
+          </div>
+          <div>
+            <b>Fecha Procesado</b> : {{ datosPago.fechaproceso }}
+          </div>
           <br>
           <p class="mb-4 text-medium-emphasis text-body-2">
-            Gracis por utilizar nuestra plataforma ahor apuedes descargar el comprobante</p>
+            Gracias por utilizar <a href="https://quickpay.com.bo/" target="_blank"  ><b>QUICKPAY</b> </a>, porfavor descarga el comprobante</p>
           <v-divider class="mb-4"></v-divider>
 
           <div class="text-end">
@@ -58,23 +46,38 @@
       </div>
       <!-- cuando ya ha generado QR y existe de datos de QR generado -->
       <div v-else-if="!generandoQr && deudasStore.qrGenerado">
-        <img :src="deudasStore.qrGenerado.imagen_qr" alt="Pago" width="100%" />
+         <img @click="dialogQR=true" :src="deudasStore.qrGenerado.imagen_qr" alt="Pago" width="400px" />
         <v-row no-gutters>
-          <div>
-            Descarga QR
-            <v-icon icon="mdi mdi-arrow-collapse-down" @click="descargaQr(deudasStore.qrGenerado.imagen_qr)"></v-icon>
+          <div class="pa-4 text-center mx-auto">
+            <b> Vigencia QR:{{ deudasStore.qrGenerado.fecha_vencimiento }}</b><br>
+            <v-chip color="success" variant="flat" @click="descargaQr(deudasStore.qrGenerado.imagen_qr)">
+              Descargar QR &nbsp;&nbsp; <v-icon icon="mdi mdi-arrow-collapse-down" start></v-icon></v-chip>
           </div>
           <div>
-            Código reserva:{{ deudasStore.qrGenerado.id_transaccion_reserva }}
+            <fieldset>
+              <legend>Solo para PRUEBAS</legend>
+              Código reserva - COTEL:{{ deudasStore.qrGenerado.id_transaccion_reserva }}<br>
+              Alias QR - SIP:<span style="font-size: 11px;">{{ deudasStore.qrGenerado.alias }}</span>
+            </fieldset>
           </div>
           <div v-if="respSocket">
             Mensaje: {{ respSocket ? respSocket.mensaje : '' }}
           </div>
         </v-row>
       </div>
-
     </v-card>
   </v-container>
+  <!-- Popup con la imagen -->
+  <v-dialog v-model="dialogQR" max-width="500">
+    <v-card>
+      <v-card-text>
+        <v-img :src="deudasStore.qrGenerado.imagen_qr" max-height="400" max-width="400"></v-img>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="primary" text @click="dialogQR = false">Cerrar</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 <script setup>
 import { useDeudasStore } from '@/stores/useDeudasStore';
@@ -82,6 +85,7 @@ import { ref, onMounted } from 'vue';
 const deudasStore = useDeudasStore();
 const generandoQr = ref(false);
 const datosPago = ref(null);
+const dialogQR = ref(false);
 import { basicMessage, showCustomAlert } from '@/utils/swalAlert';
 const url_sockete = import.meta.env.VITE_WS_URL;
 const url_api = import.meta.env.VITE_API_URL
@@ -116,10 +120,27 @@ onMounted(() => {
   });
 });
 const clickDescargarComprobante = async (alias) => {
-  const pdfUrl = url_api + '/reportes/generar-recibo/' + alias;
-  window.open(pdfUrl, '_blank');
+  await deudasStore.obtenerComprobantes(alias);
+  if(deudasStore.lstComprobantes.length>0){
+    for (var comprobante of deudasStore.lstComprobantes) {
+      console.log("iterandoooo");
+      if(comprobante.includes('factura')){
+        console.log("bajando factura");
+        const pdfFacturaUrl = url_api + '/reportes/descargar-factura/' + comprobante;
+        window.open(pdfFacturaUrl, '_blank');
+      }else{
+        console.log("bajando recibo");
+        const pdfReciboUrl = url_api + '/reportes/descargar-recibo/' + comprobante;
+        window.open(pdfReciboUrl, '_blank');
+      }
+    }
+  }
 }
 const clickGenerarQr = async () => {
+  if(!deudasStore.vEmailComprobante){
+    basicMessage("Correo es requerido")
+    return;
+  }
   if (deudasStore.qrGenerado) {
     let result = await showCustomAlert('Generar QR', 'ya existe un QR generado, desea continuar con generar nuevo QR?');
     if (result.isConfirmed) {
@@ -137,7 +158,8 @@ const generarQR = async () => {
       criterio: deudasStore.datosConsultaPersona.criterio,
       instancia: deudasStore.datosConsultaPersona.instancia
     },
-    codigoDeudas: deudasStore.deudaSeleccionado
+    codigoDeudas: deudasStore.deudaSeleccionado,
+    correoParaComprobante:deudasStore.vEmailComprobante
   };
   if (deudasStore.qrGenerado) {
     request.transaccionReservado = deudasStore.qrGenerado.id_transaccion_reserva
@@ -154,13 +176,13 @@ const descargaQr = (linkSource) => {
   downloadLink.download = "qr.jpg";
   downloadLink.click();
 };
-const verificarEstadoPagoQr = async () =>{
-  if(!deudasStore.qrGenerado.alias){
+const verificarEstadoPagoQr = async () => {
+  if (!deudasStore.qrGenerado.alias) {
     basicMessage("QR no esta generado");
-    return ;
+    return;
   }
   await deudasStore.verificarEstadoQR({
-    alias:deudasStore.qrGenerado.alias
+    alias: deudasStore.qrGenerado.alias
   });
   if (deudasStore.error) {
     basicMessage(deudasStore.error)
