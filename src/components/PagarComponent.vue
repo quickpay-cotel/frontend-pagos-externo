@@ -127,10 +127,12 @@ const clickDescargarComprobante = async (alias) => {
       if(comprobante.includes('factura')){
         console.log("bajando factura");
         const pdfFacturaUrl = url_api + '/reportes/descargar-factura/' + comprobante;
+        console.log(pdfFacturaUrl);
         window.open(pdfFacturaUrl, '_blank');
       }else{
         console.log("bajando recibo");
         const pdfReciboUrl = url_api + '/reportes/descargar-recibo/' + comprobante;
+        console.log(pdfReciboUrl);
         window.open(pdfReciboUrl, '_blank');
       }
     }
