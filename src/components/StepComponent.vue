@@ -1,6 +1,6 @@
 <template>
   <form-wizard shape="square" nextButtonText="Siguiente" backButtonText="Atras" color="#ff8a24"
-    finishButtonText="Finalizar">
+    @on-change="handleStepChange" finishButtonText="Finalizar">
     <tab-content title="Buscar Cliente">
       <v-card class="mx-auto my-8 rounded-card">
         <BuscarClienteComponent></BuscarClienteComponent>
@@ -19,11 +19,11 @@
     <tab-content title="Pagar">
       <v-row align="center" v-if="deudasStore.deudaSeleccionado.length > 0">
         <DatosParaFacturaComponent></DatosParaFacturaComponent>
-        <v-col cols="12" md="6"       >
+        <v-col cols="12" md="6">
           <PagosSeleccionadosComponent></PagosSeleccionadosComponent>
         </v-col>
 
-        <v-col cols="12" md="6"         >
+        <v-col cols="12" md="6">
           <PagarComponent></PagarComponent>
         </v-col>
       </v-row>
@@ -54,4 +54,15 @@ const deudasSeleccionados = computed(() => {
     );
   else return [];
 });
+const handleStepChange = async (prevIndex, nextIndex) => {
+  if (nextIndex == 1) { // seleccion de pagos
+    await deudasStore.buscarDeudas({
+      contratoId: deudasStore.datosPersona.contratoId ? deudasStore.datosPersona.contratoId.toString() : 0,
+      servicioId: deudasStore.datosPersona.id_servicio ? deudasStore.datosPersona.id_servicio.toString() : 0
+    });
+    if (deudasStore.error) {
+      basicMessage(deudasStore.error)
+    }
+  }
+}
 </script>
