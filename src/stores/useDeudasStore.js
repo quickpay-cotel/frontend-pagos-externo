@@ -1,6 +1,7 @@
 // stores/useCounter.js
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { useUtilsStore } from './useUtilsStore.js'
+import { ref, watch } from "vue";
 import axiosInstance from "@/services/axios";
 export const useDeudasStore = defineStore("deudas", () => {
   const datosConsultaPersona = ref(null);
@@ -24,6 +25,16 @@ export const useDeudasStore = defineStore("deudas", () => {
     },
   ]);
 
+
+  const actualizarSeleccionados = (index, item) => {
+    datosDeudas.value =  datosDeudas.value.map((obj, i) => ({
+      ...obj,
+      seleccionado: i <= index ? true : false
+    }));
+    deudaSeleccionado.value = datosDeudas.value.filter(r => r.seleccionado);
+  }  // Actualiza el campo seleccionado en el índice actual y todos los anteriores
+
+
   const limpiarDeudas = () => {
     datosPersona.value = null;
     datosDeudas.value = null;
@@ -40,8 +51,6 @@ export const useDeudasStore = defineStore("deudas", () => {
       );
       //console.log(response);
       datosPersona.value = response.data.result;
-      console.log("todo ok");
-      console.log(response.data);
 
     } catch (err) {
       // Manejar el error
@@ -57,12 +66,26 @@ export const useDeudasStore = defineStore("deudas", () => {
     }
   };
   const buscarDeudas = async (payload) => {
+    const utilsStore = useUtilsStore();
     loading.value = true;
     error.value = null;
     datosDeudas.value = null;
     try {
       const response = await axiosInstance.post(`/cotel/consulta-deuda-cliente`, payload);
-      datosDeudas.value = response.data.result;
+
+
+      let pagosDesordenados = response.data.result;
+      let pagosOrdenados = pagosDesordenados.sort((a, b) => utilsStore.parsePeriodo(a.periodo) - utilsStore.parsePeriodo(b.periodo))
+      if(deudaSeleccionado.value.length){
+        pagosOrdenados = pagosOrdenados.map(obj => {
+          const seleccionado = deudaSeleccionado.value.some(pago => pago.codigo_deuda === obj.codigo_deuda);
+          return { ...obj, seleccionado };
+        });
+      }else{
+        pagosOrdenados = pagosOrdenados.map(obj => ({ ...obj, seleccionado: false }));
+      }
+
+      datosDeudas.value = pagosOrdenados;
     } catch (err) {
       error.value = err.message;
     } finally {
@@ -148,6 +171,7 @@ export const useDeudasStore = defineStore("deudas", () => {
     qrGenerado,
     vEmailComprobante,
     datosConsultaPersona,
+    actualizarSeleccionados,
     limpiarDeudas,
     buscarDatosPersona,
     buscarDeudas,

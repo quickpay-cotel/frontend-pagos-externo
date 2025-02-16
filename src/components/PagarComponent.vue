@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card border="opacity-40 sm" class="pa-5 text-center"  rounded="xl" variant="text">
+    <v-card border="opacity-40 sm" class="pa-5 text-center" rounded="xl" variant="text">
       <h2 style="text-align: center;" v-if="!generandoQr && !datosPago">Métodos de Pago</h2>
       <v-row>
         <v-col>
@@ -33,7 +33,8 @@
           </div>
           <br>
           <p class="mb-4 text-medium-emphasis text-body-2">
-            Gracias por utilizar <a href="https://quickpay.com.bo/" target="_blank"  ><b>QUICKPAY</b> </a>, porfavor descarga el comprobante</p>
+            Gracias por utilizar <a href="https://quickpay.com.bo/" target="_blank"><b>QUICKPAY</b> </a>, porfavor
+            descarga el comprobante</p>
           <v-divider class="mb-4"></v-divider>
 
           <div class="text-end">
@@ -46,7 +47,7 @@
       </div>
       <!-- cuando ya ha generado QR y existe de datos de QR generado -->
       <div v-else-if="!generandoQr && deudasStore.qrGenerado">
-         <img @click="dialogQR=true" :src="deudasStore.qrGenerado.imagen_qr" alt="Pago" width="400px" />
+        <img @click="dialogQR = true" :src="deudasStore.qrGenerado.imagen_qr" alt="Pago" width="400px" />
         <v-row no-gutters>
           <div class="pa-4 text-center mx-auto">
             <b> Vigencia QR:{{ deudasStore.qrGenerado.fecha_vencimiento }}</b><br>
@@ -121,15 +122,15 @@ onMounted(() => {
 });
 const clickDescargarComprobante = async (alias) => {
   await deudasStore.obtenerComprobantes(alias);
-  if(deudasStore.lstComprobantes.length>0){
+  if (deudasStore.lstComprobantes.length > 0) {
     for (var comprobante of deudasStore.lstComprobantes) {
       console.log("iterandoooo");
-      if(comprobante.includes('factura')){
+      if (comprobante.includes('factura')) {
         console.log("bajando factura");
         const pdfFacturaUrl = url_api + '/reportes/descargar-factura/' + comprobante;
         console.log(pdfFacturaUrl);
         window.open(pdfFacturaUrl, '_blank');
-      }else{
+      } else {
         console.log("bajando recibo");
         const pdfReciboUrl = url_api + '/reportes/descargar-recibo/' + comprobante;
         console.log(pdfReciboUrl);
@@ -139,10 +140,16 @@ const clickDescargarComprobante = async (alias) => {
   }
 }
 const clickGenerarQr = async () => {
-  if(!deudasStore.vEmailComprobante){
+  if (!deudasStore.vEmailComprobante) {
     basicMessage("Correo es requerido")
     return;
   }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(deudasStore.vEmailComprobante)) {
+    basicMessage("Ingrese un correo válido");
+    return;
+  }
+
   if (deudasStore.qrGenerado) {
     let result = await showCustomAlert('Generar QR', 'ya existe un QR generado, desea continuar con generar nuevo QR?');
     if (result.isConfirmed) {
@@ -160,8 +167,8 @@ const generarQR = async () => {
       criterio: deudasStore.datosConsultaPersona.criterio,
       instancia: deudasStore.datosConsultaPersona.instancia
     },
-    codigoDeudas: deudasStore.deudaSeleccionado,
-    correoParaComprobante:deudasStore.vEmailComprobante
+    codigoDeudas: deudasStore.deudaSeleccionado.map(item => item.codigo_deuda),
+    correoParaComprobante: deudasStore.vEmailComprobante
   };
   if (deudasStore.qrGenerado) {
     request.transaccionReservado = deudasStore.qrGenerado.id_transaccion_reserva

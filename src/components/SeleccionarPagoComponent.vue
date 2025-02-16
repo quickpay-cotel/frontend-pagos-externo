@@ -1,8 +1,10 @@
 <template>
-  <!-- Encabezado -->
-  <v-data-table v-if="!isMobile" v-model="deudasStore.deudaSeleccionado" :headers="headers"
-    :items="deudasStore.datosDeudas" v-model:expanded="expanded" show-expand item-value="codigo_deuda" show-select   >
-
+  <v-data-table v-if="!isMobile" :headers="headers"
+    :items="deudasStore.datosDeudas" v-model:expanded="expanded"
+    show-expand item-value="codigo_deuda" >
+    <template v-slot:item.seleccionado="{index, item}">
+        <v-checkbox @click="deudasStore.actualizarSeleccionados(index,item)" v-model="item.seleccionado" readonly ></v-checkbox>
+      </template>
     <template v-slot:expanded-row="{ columns, item }">
       <tr>
         <td :colspan="columns.length">
@@ -10,24 +12,18 @@
             <v-table density="compact">
               <thead>
                 <tr>
-                  <!--<th class="text-left">codigo_item</th>-->
                   <th class="text-left">DETALLE</th>
                   <th class="text-end">CANTIDAD</th>
-                  <th class="text-end" >MONTO UNITARIO</th>
-                  <th class="text-end" >MONTO TOTAL</th>
-                  <!--<th class="text-left">
-                    genera_factura
-                  </th>-->
+                  <th class="text-end">MONTO UNITARIO</th>
+                  <th class="text-end">MONTO TOTAL</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in item.detalle" :key="item.codigo_item">
-                  <!--<td>{{ item.codigo_item }}</td>-->
-                  <td>{{ item.descripcion_item }}</td>
-                  <td class="text-end">{{ item.cantidad }}</td>
-                  <td class="text-end">{{ item.monto_unitario }}</td>
-                  <td class="text-end">{{ item.monto_item }}</td>
-                  <!--<td>{{ item.genera_factura }}</td>-->
+                <tr v-for="detalle in item.detalle" :key="detalle.codigo_item">
+                  <td>{{ detalle.descripcion_item }}</td>
+                  <td class="text-end">{{ detalle.cantidad }}</td>
+                  <td class="text-end">{{ detalle.monto_unitario }}</td>
+                  <td class="text-end">{{ detalle.monto_item }}</td>
                 </tr>
               </tbody>
             </v-table>
@@ -36,6 +32,7 @@
       </tr>
     </template>
   </v-data-table>
+
   <div v-if="isMobile">
     <v-list>
       <v-list-item-group>
@@ -82,6 +79,10 @@ import { ref, onMounted, onUnmounted } from "vue";
 import { useDeudasStore } from "@/stores/useDeudasStore";
 const deudasStore = useDeudasStore();
 const expanded = ref([]);
+
+
+
+
 // Detectar si es móvil
 const isMobile = ref(window.innerWidth <= 768);
 const updateScreenSize = () => {
@@ -103,12 +104,13 @@ const headers = [
     sortable: false,
     title: "Código deuda",
   },*/
-  { key: "nombre_factura", title: "NOMBRE FACTURA" , align: "start",},
+  { key: "seleccionado", title: "SELECCIONAR", align: "start", },
+  { key: "nombre_factura", title: "NOMBRE FACTURA", align: "start", },
   { key: "numero_documento", title: "CI/NIT", align: "start", },
-  { key: "periodo", title: "PERIODO",  align: "start", },
-  { key: "monto", title: "MONTO" , align: "end",},
+  { key: "periodo", title: "PERIODO", align: "start", },
+  { key: "monto", title: "MONTO", align: "end", },
   //{ key: 'reconexion', title: 'Reconexión' },
-  { key: "mensaje_deuda", title: "SERVICIO" , align: "start",},
+  { key: "mensaje_deuda", title: "SERVICIO", align: "start", },
   //{ key: "mensaje_contrato", title: "Mensaje Contrato" },
 
   //{ key: 'actividad', title: 'Actividad' }

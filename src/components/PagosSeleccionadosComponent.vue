@@ -2,7 +2,7 @@
   <v-container>
     <v-card border="opacity-40 sm" class="pa-5" rounded="xl" variant="text">
       <h2 style="text-align: center;">Detalle de Pago</h2><br>
-      <div class="receipt-details" v-for="deuda in deudasSeleccionados" :key="deuda">
+      <div class="receipt-details" v-for="deuda in deudasStore.deudaSeleccionado" :key="deuda">
         <div class="detail-item">
           <p class="font-weight-bold">
             Servicio
@@ -45,15 +45,15 @@ import { useDeudasStore } from '@/stores/useDeudasStore';
 const deudasStore = useDeudasStore();
 
 // Propiedad computada
-const deudasSeleccionados = computed(() => {
+/*const deudasSeleccionados = computed(() => {
   if (deudasStore.datosDeudas)
     return deudasStore.datosDeudas.filter(deudaTodos => deudasStore.deudaSeleccionado.some(deudaSeleccionado => deudaTodos.codigo_deuda === deudaSeleccionado))
   else return [];
-});
+});*/
 const totalMontoSeleccionado = computed(() => {
   if (deudasStore.datosDeudas) {
-    let lst = deudasStore.datosDeudas.filter(deudaTodos => deudasStore.deudaSeleccionado.some(deudaSeleccionado => deudaTodos.codigo_deuda === deudaSeleccionado))
-    let total =  lst.reduce((suma, objeto) => suma + objeto.monto, 0);
+    //let lst = deudasStore.datosDeudas.filter(deudaTodos => deudasStore.deudaSeleccionado.some(deudaSeleccionado => deudaTodos.codigo_deuda === deudaSeleccionado))
+    let total =  deudasStore.deudaSeleccionado.reduce((suma, objeto) => suma + objeto.monto, 0);
     return total?parseFloat(total.toFixed(2)):0;
   }
   else return 0;

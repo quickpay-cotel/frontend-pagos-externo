@@ -7,7 +7,7 @@
       </v-card>
     </tab-content>
     <tab-content title="Seleccionar Deudas">
-      <v-card v-if="deudasStore.datosDeudas.length > 0" class="mx-auto my-8 rounded-card pa-4" max-width="100%">
+      <v-card v-if="deudasStore.datosDeudas && deudasStore.datosDeudas.length > 0" class="mx-auto my-8 rounded-card pa-4" max-width="100%">
         <SeleccionarPagoComponent></SeleccionarPagoComponent>
       </v-card>
       <v-card v-else class="mx-auto my-8 rounded-card">
@@ -45,15 +45,7 @@ import DatosParaFacturaComponent from "./DatosParaFacturaComponent.vue"
 
 import { useDeudasStore } from "@/stores/useDeudasStore";
 const deudasStore = useDeudasStore();
-const deudasSeleccionados = computed(() => {
-  if (deudasStore.datosDeudas)
-    return deudasStore.datosDeudas.filter((deudaTodos) =>
-      deudasStore.deudaSeleccionado.some(
-        (deudaSeleccionado) => deudaTodos.codigo_deuda === deudaSeleccionado
-      )
-    );
-  else return [];
-});
+
 const handleStepChange = async (prevIndex, nextIndex) => {
   if (nextIndex == 1) { // seleccion de pagos
     await deudasStore.buscarDeudas({
