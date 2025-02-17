@@ -26,6 +26,9 @@
           <v-icon class="mb-5" color="success" icon="mdi-check-circle" size="112"></v-icon>
           <h2 class="text-h5 mb-6">La transacción se ha realizado con exito</h2>
           <div>
+            <b>Nro de transacción</b> : {{ datosPago.numeroTransaccion.slice(-8)}}
+          </div>
+          <div>
             <b>Monto</b> : {{ datosPago.monto + ' ' + datosPago.moneda }}
           </div>
           <div>
@@ -33,7 +36,7 @@
           </div>
           <br>
           <p class="mb-4 text-medium-emphasis text-body-2">
-            Gracias por utilizar <a href="https://quickpay.com.bo/" target="_blank"><b>QUICKPAY</b> </a>, porfavor
+            Gracias por utilizar <b>QUICKPAY</b> , porfavor
             descarga el comprobante</p>
           <v-divider class="mb-4"></v-divider>
 

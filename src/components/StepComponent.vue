@@ -1,13 +1,14 @@
 <template>
-  <form-wizard shape="square" nextButtonText="Siguiente" backButtonText="Atras" color="#ff8a24"
-    @on-change="handleStepChange" finishButtonText="Finalizar">
+  <form-wizard ref="wizard" shape="square" nextButtonText="Siguiente" backButtonText="Atras" color="#ff8a24"
+    @on-change="handleStepChange" @on-complete="resetWizard" finishButtonText="Finalizar">
     <tab-content title="Buscar Cliente">
       <v-card class="mx-auto my-8 rounded-card">
         <BuscarClienteComponent></BuscarClienteComponent>
       </v-card>
     </tab-content>
     <tab-content title="Seleccionar Deudas">
-      <v-card v-if="deudasStore.datosDeudas && deudasStore.datosDeudas.length > 0" class="mx-auto my-8 rounded-card pa-4" max-width="100%">
+      <v-card v-if="deudasStore.datosDeudas && deudasStore.datosDeudas.length > 0"
+        class="mx-auto my-8 rounded-card pa-4" max-width="100%">
         <SeleccionarPagoComponent></SeleccionarPagoComponent>
       </v-card>
       <v-card v-else class="mx-auto my-8 rounded-card">
@@ -22,7 +23,6 @@
         <v-col cols="12" md="6">
           <PagosSeleccionadosComponent></PagosSeleccionadosComponent>
         </v-col>
-
         <v-col cols="12" md="6">
           <PagarComponent></PagarComponent>
         </v-col>
@@ -40,9 +40,10 @@ import SeleccionarPagoComponent from "./SeleccionarPagoComponent.vue";
 import PagosSeleccionadosComponent from "./PagosSeleccionadosComponent.vue";
 import PagarComponent from "./PagarComponent.vue";
 import DatosParaFacturaComponent from "./DatosParaFacturaComponent.vue"
+import { ref } from 'vue';
 
-// Manejar el evento onComplete
-
+const wizard = ref(null); // Referencia al wizard
+import { basicMessage, showCustomAlert } from '@/utils/swalAlert';
 import { useDeudasStore } from "@/stores/useDeudasStore";
 const deudasStore = useDeudasStore();
 
@@ -57,4 +58,16 @@ const handleStepChange = async (prevIndex, nextIndex) => {
     }
   }
 }
+const resetWizard = async () => {
+  if (deudasStore.deudaSeleccionado.length) {
+    let result = await showCustomAlert('Finalizar', 'Esta seguro de finalizar?, perdera los pagos seleccionados');
+    if (result.isConfirmed) {
+      deudasStore.deudaSeleccionado = []
+      wizard.value?.reset();
+    }
+  }else{
+    deudasStore.deudaSeleccionado = []
+      wizard.value?.reset();
+  }
+};
 </script>
