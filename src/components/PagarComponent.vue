@@ -26,7 +26,7 @@
           <v-icon class="mb-5" color="success" icon="mdi-check-circle" size="112"></v-icon>
           <h2 class="text-h5 mb-6">La transacción se ha realizado con exito</h2>
           <div>
-            <b>Nro de transacción</b> : {{ datosPago.numeroTransaccion.slice(-8)}}
+            <b>Nro de transacción</b> : {{ deudasStore.qrGenerado.alias.slice(-8)}}
           </div>
           <div>
             <b>Monto</b> : {{ datosPago.monto + ' ' + datosPago.moneda }}
