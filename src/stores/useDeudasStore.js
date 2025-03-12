@@ -74,10 +74,7 @@ export const useDeudasStore = defineStore("deudas", () => {
     try {
       const response = await axiosInstance.post(`/cotel/consulta-deuda-cliente`, payload);
       let pagosDesordenados = response.data.result;
-      console.log("pagosss");
-      console.log(pagosDesordenados);
-      if(pagosDesordenados.status == 'OK'){
-        pagosDesordenados = pagosDesordenados.data;
+      if(pagosDesordenados.length){
         let pagosOrdenados = pagosDesordenados.sort((a, b) => utilsStore.parsePeriodo(a.periodo) - utilsStore.parsePeriodo(b.periodo))
         if(deudaSeleccionado.value.length){
           pagosOrdenados = pagosOrdenados.map(obj => {
@@ -87,10 +84,10 @@ export const useDeudasStore = defineStore("deudas", () => {
         }else{
           pagosOrdenados = pagosOrdenados.map(obj => ({ ...obj, seleccionado: false }));
         }
+
         datosDeudas.value = pagosOrdenados;
-      }else{
-        error.value = pagosDesordenados.data;
       }
+
     } catch (err) {
       error.value = err.message;
     } finally {
