@@ -147,6 +147,7 @@ const clickGenerarQr = async () => {
     basicMessage("Correo es requerido")
     return;
   }
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(deudasStore.vEmailComprobante)) {
     basicMessage("Ingrese un correo válido");
@@ -154,7 +155,7 @@ const clickGenerarQr = async () => {
   }
 
   if (deudasStore.qrGenerado) {
-    let result = await showCustomAlert('Generar QR', 'ya existe un QR generado, desea continuar con generar nuevo QR?');
+    let result = await showCustomAlert('Generar QR', 'Ya existe un QR generado. ¿Desea continuar generando un nuevo QR?');
     if (result.isConfirmed) {
       generarQR();
     }
@@ -162,6 +163,7 @@ const clickGenerarQr = async () => {
     generarQR();
   }
 }
+
 
 const generarQR = async () => {
   generandoQr.value = true;
@@ -171,7 +173,8 @@ const generarQR = async () => {
       instancia: deudasStore.datosConsultaPersona.instancia
     },
     codigoDeudas: deudasStore.deudaSeleccionado.map(item => item.codigo_deuda),
-    correoParaComprobante: deudasStore.vEmailComprobante
+    correoParaComprobante: deudasStore.vEmailComprobante,
+    nroCelular:deudasStore.vNroCelular?deudasStore.vNroCelular.trim():''
   };
   if (deudasStore.qrGenerado) {
     request.transaccionReservado = deudasStore.qrGenerado.id_transaccion_reserva

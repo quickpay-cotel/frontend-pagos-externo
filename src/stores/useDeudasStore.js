@@ -11,6 +11,7 @@ export const useDeudasStore = defineStore("deudas", () => {
   const qrGenerado = ref(null); // qr generado
   const lstComprobantes = ref([]);
   const vEmailComprobante = ref(null);
+  const vNroCelular = ref(null);
   const loading = ref(false);
   const smsLoading = ref(null);
   const error = ref(null);
@@ -72,20 +73,24 @@ export const useDeudasStore = defineStore("deudas", () => {
     datosDeudas.value = null;
     try {
       const response = await axiosInstance.post(`/cotel/consulta-deuda-cliente`, payload);
-
-
       let pagosDesordenados = response.data.result;
-      let pagosOrdenados = pagosDesordenados.sort((a, b) => utilsStore.parsePeriodo(a.periodo) - utilsStore.parsePeriodo(b.periodo))
-      if(deudaSeleccionado.value.length){
-        pagosOrdenados = pagosOrdenados.map(obj => {
-          const seleccionado = deudaSeleccionado.value.some(pago => pago.codigo_deuda === obj.codigo_deuda);
-          return { ...obj, seleccionado };
-        });
+      console.log("pagosss");
+      console.log(pagosDesordenados);
+      if(pagosDesordenados.status == 'OK'){
+        pagosDesordenados = pagosDesordenados.data;
+        let pagosOrdenados = pagosDesordenados.sort((a, b) => utilsStore.parsePeriodo(a.periodo) - utilsStore.parsePeriodo(b.periodo))
+        if(deudaSeleccionado.value.length){
+          pagosOrdenados = pagosOrdenados.map(obj => {
+            const seleccionado = deudaSeleccionado.value.some(pago => pago.codigo_deuda === obj.codigo_deuda);
+            return { ...obj, seleccionado };
+          });
+        }else{
+          pagosOrdenados = pagosOrdenados.map(obj => ({ ...obj, seleccionado: false }));
+        }
+        datosDeudas.value = pagosOrdenados;
       }else{
-        pagosOrdenados = pagosOrdenados.map(obj => ({ ...obj, seleccionado: false }));
+        error.value = pagosDesordenados.data;
       }
-
-      datosDeudas.value = pagosOrdenados;
     } catch (err) {
       error.value = err.message;
     } finally {
@@ -170,6 +175,7 @@ export const useDeudasStore = defineStore("deudas", () => {
     lstCriterioConsultaDatoCliente,
     qrGenerado,
     vEmailComprobante,
+    vNroCelular,
     datosConsultaPersona,
     actualizarSeleccionados,
     limpiarDeudas,
