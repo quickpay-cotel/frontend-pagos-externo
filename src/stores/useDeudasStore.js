@@ -84,12 +84,17 @@ export const useDeudasStore = defineStore("deudas", () => {
         }else{
           pagosOrdenados = pagosOrdenados.map(obj => ({ ...obj, seleccionado: false }));
         }
-
         datosDeudas.value = pagosOrdenados;
       }
-
     } catch (err) {
-      error.value = err.message;
+      // Manejar el error
+      if (err.response) {
+        // Acceder al mensaje del backend
+        error.value = err.response.data.message || "Error desconocido del servidor";
+      } else {
+        error.value = "Error de red o problema desconocido";
+      }
+      loading.value = false;
     } finally {
       loading.value = false;
     }
