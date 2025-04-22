@@ -10,9 +10,9 @@ import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
-
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/cotel/',
   plugins: [
     VueRouter(),
     Layouts(),
@@ -63,5 +63,5 @@ export default defineConfig({
   },
   server: {
     port: 4000,
-  },
+  }
 })
