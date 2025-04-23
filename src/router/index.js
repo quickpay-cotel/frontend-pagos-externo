@@ -12,10 +12,16 @@ const routes = [
       },
     ],
   },
+    // Ruta de captura para cualquier ruta no definida (404)
+    {
+      path: '/:catchAll(.*)',
+      name: 'NotFound',
+      component: () => import('@/pages/NotFound.vue'), // Puedes crear una página de error 404
+    },
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes,
 })
 

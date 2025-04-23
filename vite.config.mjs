@@ -12,7 +12,7 @@ import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/cotel/',
+  base: process.env.VITE_BASE_URL || '/cotel/',  // Usar process.env en vite.config.mjs
   plugins: [
     VueRouter(),
     Layouts(),
