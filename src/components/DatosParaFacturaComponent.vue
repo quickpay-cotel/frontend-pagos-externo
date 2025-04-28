@@ -4,15 +4,15 @@
       <h2 style="text-align: center;">Datos para facturación</h2><br>
       <div v-if="deudasStore.deudaSeleccionado.length">
         <v-row align="center" justify="center">
-          <v-col cols="12" md="3"><span class="font-weight-bold">Nombre</span>&nbsp;&nbsp;<span
+          <v-col cols="12"><span class="font-weight-bold">Nombre</span>&nbsp;&nbsp;<span
               class="font-weight-thin">
               {{ deudasStore.deudaSeleccionado[0].nombre_factura }}</span>
           </v-col>
-          <v-col cols="12" md="3"> <span class="font-weight-bold">Número Documento</span>&nbsp;&nbsp;<span
+          <!--<v-col cols="12" md="3"> <span class="font-weight-bold">Número Documento</span>&nbsp;&nbsp;<span
               class="font-weight-thin"> {{
                 deudasStore.deudaSeleccionado[0].tipo_documento + ' ' + deudasStore.deudaSeleccionado[0].numero_documento
               }}</span>
-          </v-col>
+          </v-col>-->
         </v-row>
 
         <v-row align="center" justify="center">

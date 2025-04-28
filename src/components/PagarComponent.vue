@@ -57,13 +57,13 @@
             <v-chip color="success" variant="flat" @click="descargaQr(deudasStore.qrGenerado.imagen_qr)">
               Descargar QR &nbsp;&nbsp; <v-icon icon="mdi mdi-arrow-collapse-down" start></v-icon></v-chip>
           </div>
-          <div>
+          <!--<div>
             <fieldset>
               <legend>Solo para PRUEBAS</legend>
               Código reserva - COTEL:{{ deudasStore.qrGenerado.id_transaccion_reserva }}<br>
               Alias QR - SIP:<span style="font-size: 11px;">{{ deudasStore.qrGenerado.alias }}</span>
             </fieldset>
-          </div>
+          </div>-->
           <div v-if="respSocket">
             Mensaje: {{ respSocket ? respSocket.mensaje : '' }}
           </div>
