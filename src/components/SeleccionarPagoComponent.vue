@@ -1,10 +1,10 @@
 <template>
-  <v-data-table v-if="!isMobile" :headers="headers"
-    :items="deudasStore.datosDeudas" v-model:expanded="expanded"
-    show-expand item-value="codigo_deuda" >
-    <template v-slot:item.seleccionado="{index, item}">
-        <v-checkbox @click="deudasStore.actualizarSeleccionados(index,item)" v-model="item.seleccionado" readonly ></v-checkbox>
-      </template>
+  <v-data-table v-if="!isMobile" :headers="headers" :items="deudasStore.datosDeudas" v-model:expanded="expanded"
+    show-expand item-value="codigo_deuda">
+    <template v-slot:item.seleccionado="{ index, item }">
+      <v-checkbox @click="deudasStore.actualizarSeleccionados(index, item)" v-model="item.seleccionado"
+        readonly></v-checkbox>
+    </template>
     <template v-slot:expanded-row="{ columns, item }">
       <tr>
         <td :colspan="columns.length">
@@ -42,8 +42,12 @@
             <v-list-item-subtitle>
               <v-card border="opacity-40 sm" class="mx-auto pa-2" max-width="100%" rounded="xl" variant="text">
                 <v-col cols="12">
-                  <v-switch color="primary" v-model="deudasStore.deudaSeleccionado" :value="item.codigo_deuda"
-                    label="Seleccionar"></v-switch>
+
+                  <!--<v-checkbox @click="deudasStore.actualizarSeleccionados(index,item)" v-model="item.seleccionado" readonly ></v-checkbox>-->
+
+                  <v-switch color="primary" v-model="item.seleccionado" label="Seleccionar"
+                   @click="deudasStore.actualizarSeleccionados(index,item)" readonly ></v-switch>
+
                   <v-row align="center" class="pa-1">
                     <span class="font-weight-bold ">NOMBRE FACTURA</span><br>
                     <span class="font-weight-thin ">{{ item.nombre_factura }}</span>
